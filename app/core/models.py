@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, default=3)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=False, default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
 
@@ -63,3 +63,20 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class Wallet(models.Model):
+    #Wallet Model
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    main = models.BooleanField(default=False)
+    currency = models.CharField(max_length=3)
+    balance = models.FloatField(default=0.0)
+    created_at = models.DateTimeField(auto_now=False, default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.currency
+
+
